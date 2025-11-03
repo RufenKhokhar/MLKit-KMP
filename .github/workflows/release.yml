@@ -21,15 +21,24 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
 
       # Decode the base64 private key and expose it as SIGNING_KEY for Gradle
-      - name: Prepare signing key
+      - name: Prepare signing key (in-memory)
         shell: bash
         run: |
-          # mask the secret's base64 so it never appears in logs
-          echo "::add-mask::${SIGNING_KEY_B64}"
+          set -euo pipefail
+          # Decode base64 -> ASCII armored private key, strip CRLF if any
+          tr -d '\r' <<< "${SIGNING_KEY_B64}" | base64 -d > "$RUNNER_TEMP/signing.asc"
 
-          echo "SIGNING_KEY<<EOF" >> "$GITHUB_ENV"
-          echo "${SIGNING_KEY_B64}" | base64 -d >> "$GITHUB_ENV"
-          echo "EOF" >> "$GITHUB_ENV"
+          # Export to GITHUB_ENV as a multiline var (no quotes around EOF)
+          {
+            echo "SIGNING_KEY<<EOF"
+            cat "$RUNNER_TEMP/signing.asc"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+
+          # Sanity checks without leaking the key
+          echo "Key size (bytes): $(wc -c < "$RUNNER_TEMP/signing.asc")"
+          head -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/BEGIN: ****/'
+          tail -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/END: ****/'
         env:
           SIGNING_KEY_B64: ${{ secrets.SIGNING_KEY }}
 
