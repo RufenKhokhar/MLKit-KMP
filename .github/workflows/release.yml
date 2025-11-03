@@ -24,12 +24,12 @@ jobs:
       - name: Prepare signing key
         shell: bash
         run: |
-          echo "${SIGNING_KEY_B64}" | base64 -d > /tmp/signing.asc
-          {
-            echo "SIGNING_KEY<<'EOF'"
-            cat /tmp/signing.asc
-            echo "EOF"
-          } >> "$GITHUB_ENV"
+          # mask the secret's base64 so it never appears in logs
+          echo "::add-mask::${SIGNING_KEY_B64}"
+
+          echo "SIGNING_KEY<<EOF" >> "$GITHUB_ENV"
+          echo "${SIGNING_KEY_B64}" | base64 -d >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
         env:
           SIGNING_KEY_B64: ${{ secrets.SIGNING_KEY }}
 
