@@ -3,39 +3,49 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "v*"
+      - 'v*'   # e.g., v1.0.0
 
 jobs:
   publish:
     runs-on: macos-latest
 
-    steps:
-      - uses: actions/checkout@v4
+    permissions:
+      contents: read
 
-      - uses: actions/setup-java@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
 
-      - uses: gradle/actions/setup-gradle@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
-      # Decode the base64 private key and expose it as SIGNING_KEY for Gradle
-      - name: Prepare signing key (in-memory)
+      # Decode your base64 private key and expose it as a multiline env var SIGNING_KEY
+      - name: Prepare signing key
         shell: bash
         run: |
           set -euo pipefail
-          # Decode base64 -> ASCII armored private key, strip CRLF if any
-          tr -d '\r' <<< "${SIGNING_KEY_B64}" | base64 -d > "$RUNNER_TEMP/signing.asc"
 
-          # Export to GITHUB_ENV as a multiline var (no quotes around EOF)
+          # Optional: mask secret so it never appears in logs
+          echo "::add-mask::${SIGNING_KEY_B64}"
+
+          # Decode base64 -> ASCII armor; normalize CRLF if any
+          echo "${SIGNING_KEY_B64}" | tr -d '\r' | base64 -d > "$RUNNER_TEMP/signing.asc"
+
+          # Export to GITHUB_ENV as multiline var (NO quotes around EOF)
           {
             echo "SIGNING_KEY<<EOF"
             cat "$RUNNER_TEMP/signing.asc"
             echo "EOF"
           } >> "$GITHUB_ENV"
 
-          # Sanity checks without leaking the key
+          # Tiny sanity check without leaking content
           echo "Key size (bytes): $(wc -c < "$RUNNER_TEMP/signing.asc")"
           head -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/BEGIN: ****/'
           tail -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/END: ****/'
@@ -43,9 +53,10 @@ jobs:
           SIGNING_KEY_B64: ${{ secrets.SIGNING_KEY }}
 
       - name: Publish to Maven Central
+        # Gradle reads these via gradle.properties -> ${ENV_VAR}
         env:
           SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}
           SONATYPE_USERNAME:      ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD:      ${{ secrets.SONATYPE_PASSWORD }}
-        #run: ./gradlew publishToMavenCentral --no-daemon --stacktrace
+       # run: ./gradlew publishToMavenCentral --no-daemon --stacktrace
         run:  ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
