@@ -40,7 +40,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.rufenkhokhar"
+    namespace = project.group.toString()
     compileSdk = 36
 
     defaultConfig {
@@ -48,36 +48,38 @@ android {
     }
 }
 
-//Publishing your Kotlin Multiplatform library to Maven Central
-//https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-publish-libraries.html
+
 mavenPublishing {
     coordinates(
-        groupId = "io.github.rufenkhokhar",
-        artifactId = "mlkit-core",
-        version = "1.0.0"
+        groupId = project.group.toString(),
+        artifactId = "mlkit-${project.name}",
+        version = project.version.toString()
     )
     pom {
-        name.set("GoogleMLKit-KMP")
-        description.set("Google ML Kit for Kotlin Multiplatform")
-        inceptionYear.set("2025")
-        url.set("https://github.com/RufenKhokhar/MLKit-KMP")
+        name.set(providers.gradleProperty("POM_NAME"))
+        description.set(providers.gradleProperty("POM_DESCRIPTION"))
+        url.set(providers.gradleProperty("POM_URL"))
+        inceptionYear.set(providers.gradleProperty("POM_INCEPTION_YEAR"))
+
         licenses {
             license {
-                name.set("MIT")
-                url.set("https://opensource.org/licenses/MIT")
+                name.set(providers.gradleProperty("POM_LICENSE_NAME"))
+                url.set(providers.gradleProperty("POM_LICENSE_URL"))
             }
         }
         developers {
             developer {
-                id.set("RufenKhokhar")
-                name.set("RufenKhokhar")
-                email.set("Rufankhokhar@gmail.com")
+                id.set(providers.gradleProperty("POM_DEVELOPER_ID"))
+                name.set(providers.gradleProperty("POM_DEVELOPER_NAME"))
+                providers.gradleProperty("POM_DEVELOPER_EMAIL").orNull?.let { email.set(it) }
             }
         }
 
-        // Specify SCM information
         scm {
-            url.set("https://github.com/RufenKhokhar/MLKit-KMP")
+            url.set(providers.gradleProperty("POM_SCM_URL"))
+            connection.set(providers.gradleProperty("POM_SCM_CONNECTION"))
+            developerConnection.set(providers.gradleProperty("POM_SCM_DEV_CONNECTION"))
+            tag.set(providers.gradleProperty("POM_SCM_TAG").orNull ?: "HEAD")
         }
     }
     publishToMavenCentral()
