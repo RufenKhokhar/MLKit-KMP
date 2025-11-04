@@ -28,40 +28,47 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       # Decode your base64 private key and expose it as a multiline env var SIGNING_KEY
-      - name: Prepare signing key
+      - name: Import GPG key & configure signing (gpg mode)
         shell: bash
         env:
-            # Environment secrets (the ones in your screenshot)
-            KEY_FROM_SECRET: ${{ secrets.SIGNING_KEY }}
+            KEY_FROM_SECRET: ${{ secrets.SIGNING_KEY }}             # repo/env secret
+            SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}
         run: |
             set -euo pipefail
             
             if [ -z "${KEY_FROM_SECRET:-}" ]; then
-              echo "ERROR: secrets.SIGNING_KEY is empty. Check the environment name and secret name."
+              echo "ERROR: SIGNING_KEY secret is empty. Make sure it's set in repo secrets (or bind the correct Environment)."
               exit 1
             fi
             
-            # If the secret is base64, decode it; if it's raw ASCII armor, use as-is.
+            # If the secret is base64, decode; if it's raw ASCII armor, use as-is.
             if [[ "${KEY_FROM_SECRET}" == -----BEGIN* ]]; then
-              # Raw ASCII-armored private key
               printf '%s\n' "${KEY_FROM_SECRET}" > "$RUNNER_TEMP/signing.asc"
             else
-              # Base64 of the ASCII-armored private key
               echo "::add-mask::${KEY_FROM_SECRET}"
               printf '%s' "${KEY_FROM_SECRET}" | tr -d '\r' | base64 -d > "$RUNNER_TEMP/signing.asc"
             fi
             
-            # Export as multiline env var SIGNING_KEY for Gradle (no quotes around EOF)
-            {
-              echo "SIGNING_KEY<<EOF"
-              cat "$RUNNER_TEMP/signing.asc"
-              echo "EOF"
-            } >> "$GITHUB_ENV"
+            # Import to the runner's GPG keyring (non-interactive)
+            gpg --batch --import "$RUNNER_TEMP/signing.asc"
             
-            # Tiny sanity check (won't leak contents)
-            echo "Key size (bytes): $(wc -c < "$RUNNER_TEMP/signing.asc")"
-            head -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/BEGIN: ****/'
-            tail -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/END: ****/'
+            echo "Imported secret keys:"
+            gpg --list-secret-keys --keyid-format=long
+            
+            # Extract the long key id of the first secret key (sec ...)
+            KEY_ID="$(gpg --list-secret-keys --keyid-format=long | awk '/^sec/ {print $2}' | sed 's#.*/##' | head -1)"
+            if [ -z "${KEY_ID:-}" ]; then
+              echo "ERROR: Could not detect imported key id."
+              exit 1
+            fi
+            echo "Using key id: ${KEY_ID}"
+            
+            # Configure Gradle signing via ORG_GRADLE_PROJECT_ env (preferred for CI)
+            {
+              echo "ORG_GRADLE_PROJECT_signing.gnupg.executable=gpg"
+              echo "ORG_GRADLE_PROJECT_signing.gnupg.keyName=${KEY_ID}"
+              echo "ORG_GRADLE_PROJECT_signing.gnupg.passphrase=${SIGNING_KEY_PASSPHRASE}"
+            } >> "$GITHUB_ENV"
 
       - name: Publish to Maven Central
         # Gradle reads these via gradle.properties -> ${ENV_VAR}
