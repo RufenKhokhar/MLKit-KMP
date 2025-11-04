@@ -76,5 +76,5 @@ jobs:
           SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}
           SONATYPE_USERNAME:      ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD:      ${{ secrets.SONATYPE_PASSWORD }}
-        run: ./gradlew publishToMavenCentral --no-daemon --stacktrace
+        run: ./gradlew publishToMavenCentral --no-daemon --stacktrace --no-configuration-cache
        # run:  ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
