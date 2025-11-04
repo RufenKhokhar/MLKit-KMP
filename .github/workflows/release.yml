@@ -29,28 +29,38 @@ jobs:
       # Decode your base64 private key and expose it as a multiline env var SIGNING_KEY
       - name: Prepare signing key
         shell: bash
-        run: |
-          set -euo pipefail
-
-          # Optional: mask secret so it never appears in logs
-          echo "::add-mask::${SIGNING_KEY_B64}"
-
-          # Decode base64 -> ASCII armor; normalize CRLF if any
-          echo "${SIGNING_KEY_B64}" | tr -d '\r' | base64 -d > "$RUNNER_TEMP/signing.asc"
-
-          # Export to GITHUB_ENV as multiline var (NO quotes around EOF)
-          {
-            echo "SIGNING_KEY<<EOF"
-            cat "$RUNNER_TEMP/signing.asc"
-            echo "EOF"
-          } >> "$GITHUB_ENV"
-
-          # Tiny sanity check without leaking content
-          echo "Key size (bytes): $(wc -c < "$RUNNER_TEMP/signing.asc")"
-          head -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/BEGIN: ****/'
-          tail -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/END: ****/'
         env:
-          SIGNING_KEY_B64: ${{ secrets.SIGNING_KEY }}
+            # Environment secrets (the ones in your screenshot)
+            KEY_FROM_SECRET: ${{ secrets.SIGNING_KEY }}
+        run: |
+            set -euo pipefail
+            
+            if [ -z "${KEY_FROM_SECRET:-}" ]; then
+              echo "ERROR: secrets.SIGNING_KEY is empty. Check the environment name and secret name."
+              exit 1
+            fi
+            
+            # If the secret is base64, decode it; if it's raw ASCII armor, use as-is.
+            if [[ "${KEY_FROM_SECRET}" == -----BEGIN* ]]; then
+              # Raw ASCII-armored private key
+              printf '%s\n' "${KEY_FROM_SECRET}" > "$RUNNER_TEMP/signing.asc"
+            else
+              # Base64 of the ASCII-armored private key
+              echo "::add-mask::${KEY_FROM_SECRET}"
+              printf '%s' "${KEY_FROM_SECRET}" | tr -d '\r' | base64 -d > "$RUNNER_TEMP/signing.asc"
+            fi
+            
+            # Export as multiline env var SIGNING_KEY for Gradle (no quotes around EOF)
+            {
+              echo "SIGNING_KEY<<EOF"
+              cat "$RUNNER_TEMP/signing.asc"
+              echo "EOF"
+            } >> "$GITHUB_ENV"
+            
+            # Tiny sanity check (won't leak contents)
+            echo "Key size (bytes): $(wc -c < "$RUNNER_TEMP/signing.asc")"
+            head -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/BEGIN: ****/'
+            tail -1 "$RUNNER_TEMP/signing.asc" | sed 's/.*/END: ****/'
 
       - name: Publish to Maven Central
         # Gradle reads these via gradle.properties -> ${ENV_VAR}
