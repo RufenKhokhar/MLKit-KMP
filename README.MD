@@ -4,7 +4,7 @@ Kotlin Multiplatform bindings for Google ML Kit. This library wraps ML Kit’s n
 
 ---
 
-![Maven Central](https://img.shields.io/maven-central/v/io.github.rufenkhokhar/barcode)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.rufenkhokhar/mlkit-barcode)
 ![Kotlin](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF?logo=kotlin&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/Platforms-Android%20|%20iOS-blue)
@@ -55,7 +55,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.rufenkhokhar:barcode:1.0.0")
+                implementation("io.github.rufenkhokhar:mlkit-barcode:1.0.0")
             }
         }
     }
