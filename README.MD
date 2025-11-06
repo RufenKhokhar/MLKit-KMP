@@ -55,7 +55,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.rufenkhokhar:mlkit-barcode:1.0.0")
+                implementation("io.github.rufenkhokhar:mlkit-barcode:+")
             }
         }
     }
