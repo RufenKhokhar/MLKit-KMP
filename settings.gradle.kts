@@ -31,5 +31,8 @@ dependencyResolutionManagement {
 include(":core")
 include(":corevision")
 include(":barcode")
+include(":face-detection")
+include(":face-detection-play-services")
+include(":barcode-play-services")
 include(":sample:composeApp")
 
