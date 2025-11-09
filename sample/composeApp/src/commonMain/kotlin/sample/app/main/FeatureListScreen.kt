@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +33,7 @@ val featureList = listOf(
     FeatureItem("Vision", "Vision", "", true),
     FeatureItem("Vision", "Barcode Scanning", "✅ Available", navigationItem = NavigationItem.Barcode),
     FeatureItem("Vision", "Text Recognition v2", "⏳ Planned"),
-    FeatureItem("Vision", "Face Detection", "⏳ Planned"),
+    FeatureItem("Vision", "Face Detection", "✅ Available", navigationItem = NavigationItem.FaceDetection),
     FeatureItem("Vision", "Face Mesh Detection", "⏳ Planned"),
     FeatureItem("Vision", "Pose Detection", "⏳ Planned"),
     FeatureItem("Vision", "Selfie Segmentation", "⏳ Planned"),

@@ -9,4 +9,6 @@ sealed interface NavigationItem {
     data object Home: NavigationItem
     @Serializable
     data object Barcode: NavigationItem
+    @Serializable
+    data object FaceDetection: NavigationItem
 }

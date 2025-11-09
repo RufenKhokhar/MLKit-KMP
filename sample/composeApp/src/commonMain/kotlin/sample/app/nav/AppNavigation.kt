@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import sample.app.barcode.BarcodeScanScreen
 import sample.app.barcode.BarcodeScanViewModel
+import sample.app.facedetection.FaceDetectionScreen
+import sample.app.facedetection.FaceDetectionViewModel
 import sample.app.main.MainScreen
 import sample.app.utils.ViewModelFactory
 
@@ -28,6 +30,18 @@ fun AppNavigation() {
             val viewModel: BarcodeScanViewModel = remember { BarcodeScanViewModel() }
             val state by viewModel.state.collectAsStateWithLifecycle()
             BarcodeScanScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                onAction = viewModel::onAction,
+                onBackClick = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<NavigationItem.FaceDetection> {
+            val viewModel: FaceDetectionViewModel = remember { FaceDetectionViewModel() }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            FaceDetectionScreen(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 onAction = viewModel::onAction,
