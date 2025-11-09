@@ -1,5 +1,7 @@
 package io.github.rufenkhokhar.barcode
 
+import androidx.annotation.OptIn
+import androidx.camera.core.ExperimentalGetImage
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -15,7 +17,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-
+@OptIn(ExperimentalGetImage::class)
 internal class AndroidBarcodeProcessor(scannerOptions: BarcodeScannerOptions) : BarcodeProcessor {
     private val barcodeScanner = BarcodeScanning.getClient(scannerOptions)
 
