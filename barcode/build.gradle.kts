@@ -28,7 +28,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.kotlinx.coroutines.android)
-            implementation(libs.play.services.mlkit.barcode.scanning)
+            implementation(libs.mlkit.barcode.scanning)
             implementation(libs.camerax.core)
         }
 
