@@ -5,9 +5,12 @@ agp = "8.13.0"
 lifecycleViewmodelCompose = "2.9.4"
 maven-publish = "0.34.0"
 kotlinx-coroutines = "1.10.2"
-compose = "1.9.1"
+compose = "1.9.2"
 androidx-activityCompose = "1.11.0"
 playServicesMlkitBarcodeScanning = "18.3.1"
+mlkitBarcodeScanning = "17.3.0"
+mlkitFacedetection = "16.1.7"
+mlkitFacedetectionPlayservices = "17.1.0"
 camerax = "1.5.1"
 androidx-navigation = "2.9.1"
 kotlinx-serialization = "1.9.0"
@@ -21,6 +24,9 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 play-services-mlkit-barcode-scanning = { module = "com.google.android.gms:play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
+mlkit-barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "mlkitBarcodeScanning" }
+mlkit-face-detection = { module = "com.google.mlkit:face-detection", version.ref = "mlkitFacedetection" }
+mlkit-face-detection-play-services = { module = "com.google.android.gms:play-services-mlkit-face-detection", version.ref = "mlkitFacedetectionPlayservices" }
 camerax-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
 camerax-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }
 camerax-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
