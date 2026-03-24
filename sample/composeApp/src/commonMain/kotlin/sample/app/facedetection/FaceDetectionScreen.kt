@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import sample.app.CameraLayout
-import sample.app.barcode.BarcodeScreenAction
 import sample.app.utils.CameraPermissionHandler
 
 @Composable
@@ -31,7 +30,7 @@ fun FaceDetectionScreen(
         Box(modifier = modifier) {
             CameraLayout(
                 modifier = Modifier.fillMaxSize(),
-                onFrameAvailable = { onAction(FaceDetectionScreenAction.OnOnFrameAvailable(it)) }
+                onFrameAvailable = { onAction(FaceDetectionScreenAction.OnFrameAvailable(it)) }
             )
             IconButton(
                 onClick = onBackClick,

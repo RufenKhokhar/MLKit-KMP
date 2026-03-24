@@ -175,7 +175,7 @@ internal class IOSFaceDetection(private val options: FaceDetectorOptions) : Face
         @Suppress("CAST_NEVER_SUCCEEDS")
         val point: MLKVisionPoint = landmark?.position() as? MLKVisionPoint ?: return null
         point.x
-        return Point(x = point.x.toInt(), point.y.toInt())
+        return Point(x = point.x.toFloat(), point.y.toFloat())
 
     }
 
@@ -184,7 +184,7 @@ internal class IOSFaceDetection(private val options: FaceDetectorOptions) : Face
         val arr = contour?.points ?: return emptyList()
         return arr.mapNotNull {
             val p = it as? MLKVisionPoint
-            p?.let { Point(p.x.toInt(), p.y.toInt()) }
+            p?.let { Point(p.x.toFloat(), p.y.toFloat()) }
         }
     }
 }

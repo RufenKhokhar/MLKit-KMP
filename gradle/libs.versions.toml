@@ -1,26 +1,28 @@
 [versions]
 
-kotlin = "2.2.21"
-agp = "8.13.0"
-lifecycleViewmodelCompose = "2.9.4"
-maven-publish = "0.34.0"
+kotlin = "2.3.0"
+agp = "8.13.2"
+lifecycleViewmodelCompose = "2.10.0"
+maven-publish = "0.35.0"
 kotlinx-coroutines = "1.10.2"
-compose = "1.9.2"
-androidx-activityCompose = "1.11.0"
+compose = "1.9.3"
+androidx-activityCompose = "1.12.2"
 playServicesMlkitBarcodeScanning = "18.3.1"
 mlkitBarcodeScanning = "17.3.0"
 mlkitFacedetection = "16.1.7"
 mlkitFacedetectionPlayservices = "17.1.0"
-camerax = "1.5.1"
+camerax = "1.5.2"
 androidx-navigation = "2.9.1"
 kotlinx-serialization = "1.9.0"
+textRecognition = "16.0.1"
+textRecognitionPlayServices = "19.0.1"
+poseDetection = "18.0.0-beta5"
 
 [libraries]
 
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 play-services-mlkit-barcode-scanning = { module = "com.google.android.gms:play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
@@ -35,6 +37,9 @@ camerax-mlkit = { module = "androidx.camera:camera-mlkit-vision", version.ref = 
 camerax-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camerax" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
+text-recognition-play-services = { module = "com.google.android.gms:play-services-mlkit-text-recognition", version.ref = "textRecognitionPlayServices" }
+pose-detection = { module = "com.google.mlkit:pose-detection", version.ref = "poseDetection" }
 [plugins]
 
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

@@ -11,6 +11,6 @@ package io.github.rufenkhokhar.corevision
  * @property y The vertical coordinate of the point.
  */
 data class Point(
-    val x: Int,
-    val y: Int
+    val x: Float,
+    val y: Float
 )

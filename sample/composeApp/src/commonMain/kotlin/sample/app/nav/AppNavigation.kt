@@ -15,6 +15,10 @@ import sample.app.barcode.BarcodeScanViewModel
 import sample.app.facedetection.FaceDetectionScreen
 import sample.app.facedetection.FaceDetectionViewModel
 import sample.app.main.MainScreen
+import sample.app.pose.PoseDetectionScreen
+import sample.app.pose.PoseDetectionViewModel
+import sample.app.text.TextRecognitionScreen
+import sample.app.text.TextRecognitionViewModel
 import sample.app.utils.ViewModelFactory
 
 @Composable
@@ -42,6 +46,30 @@ fun AppNavigation() {
             val viewModel: FaceDetectionViewModel = remember { FaceDetectionViewModel() }
             val state by viewModel.state.collectAsStateWithLifecycle()
             FaceDetectionScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                onAction = viewModel::onAction,
+                onBackClick = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<NavigationItem.TextRecognition> {
+            val viewModel: TextRecognitionViewModel = remember { TextRecognitionViewModel() }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            TextRecognitionScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                onAction = viewModel::onAction,
+                onBackClick = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<NavigationItem.PoseDetection> {
+            val viewModel: PoseDetectionViewModel = remember { PoseDetectionViewModel() }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            PoseDetectionScreen(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 onAction = viewModel::onAction,

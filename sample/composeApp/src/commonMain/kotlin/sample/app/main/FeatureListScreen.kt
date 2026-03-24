@@ -32,10 +32,10 @@ data class FeatureItem(
 val featureList = listOf(
     FeatureItem("Vision", "Vision", "", true),
     FeatureItem("Vision", "Barcode Scanning", "✅ Available", navigationItem = NavigationItem.Barcode),
-    FeatureItem("Vision", "Text Recognition v2", "⏳ Planned"),
+    FeatureItem("Vision", "Text Recognition v2", "✅ Available", navigationItem = NavigationItem.TextRecognition),
     FeatureItem("Vision", "Face Detection", "✅ Available", navigationItem = NavigationItem.FaceDetection),
     FeatureItem("Vision", "Face Mesh Detection", "⏳ Planned"),
-    FeatureItem("Vision", "Pose Detection", "⏳ Planned"),
+    FeatureItem("Vision", "Pose Detection", "✅ Available", navigationItem = NavigationItem.PoseDetection),
     FeatureItem("Vision", "Selfie Segmentation", "⏳ Planned"),
     FeatureItem("Vision", "Subject Segmentation", "⏳ Planned"),
     FeatureItem("Vision", "Document Scanner", "⏳ Planned"),

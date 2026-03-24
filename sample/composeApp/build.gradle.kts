@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose.compiler)
@@ -33,6 +31,8 @@ kotlin {
             implementation(compose.components.resources)
             implementation(project(":barcode"))
             implementation(project(":face-detection"))
+            implementation(project(":text-recognition"))
+            implementation(project(":pose-detection"))
             implementation(libs.camerax.core)
             implementation(libs.camerax.camera2)
             implementation(libs.camerax.lifecycle)

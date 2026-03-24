@@ -48,7 +48,7 @@ kotlin {
         homepage = ""
         ios.deploymentTarget = "14.0"
         framework {
-            baseName = "Barcode"
+            baseName = "BarcodePlayServices"
             isStatic = true
         }
 

@@ -101,8 +101,8 @@ internal class AndroidFaceDetection(private val options: FaceDetectorOptions) : 
     private fun com.google.mlkit.vision.face.Face.landmarkOrNull(type: Int): Point?{
        val position = getLandmark(type)?.position ?: return null
         return Point(
-            x = position.x.toInt(),
-            y = position.y.toInt()
+            x = position.x,
+            y = position.y
         )
     }
 
@@ -110,7 +110,7 @@ internal class AndroidFaceDetection(private val options: FaceDetectorOptions) : 
     private fun com.google.mlkit.vision.face.Face.contourPointsOrEmpty(type: Int): List<Point> {
       val points =   getContour(type)?.points ?: emptyList()
         return points.map {
-            Point(x = it.x.toInt(), y = it.y.toInt())
+            Point(x = it.x, y = it.y)
         }
     }
 

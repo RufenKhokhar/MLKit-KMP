@@ -259,7 +259,7 @@ internal class AndroidBarcodeProcessor(scannerOptions: BarcodeScannerOptions) : 
             rawValue = barcode.rawValue,
             displayValue = barcode.displayValue,
             valueType = resValueType,
-            cornerPoints = barcode.cornerPoints?.map { Point(it.x,it.y) }.orEmpty(),
+            cornerPoints = barcode.cornerPoints?.map { Point(it.x.toFloat(),it.y.toFloat()) }.orEmpty(),
         )
     }
 }

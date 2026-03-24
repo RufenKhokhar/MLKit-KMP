@@ -34,7 +34,6 @@ import platform.CoreMedia.CMSampleBufferRef
 import platform.Foundation.NSSelectorFromString
 import platform.QuartzCore.CALayer
 import platform.UIKit.UIApplication
-import platform.UIKit.UIImageOrientation
 import platform.UIKit.UIInterfaceOrientation
 import platform.UIKit.UIInterfaceOrientationLandscapeLeft
 import platform.UIKit.UIInterfaceOrientationLandscapeRight
@@ -212,28 +211,14 @@ private fun UIInterfaceOrientation.toAVOrientation(): AVCaptureVideoOrientation 
     }
 
 
-private fun AVCaptureVideoOrientation.toUIImageOrientation(): UIImageOrientation =
-    when (this) {
-        AVCaptureVideoOrientationPortrait -> UIImageOrientation.UIImageOrientationUp
-        AVCaptureVideoOrientationPortraitUpsideDown -> UIImageOrientation.UIImageOrientationDown
-        AVCaptureVideoOrientationLandscapeLeft -> UIImageOrientation.UIImageOrientationLeft
-        AVCaptureVideoOrientationLandscapeRight -> UIImageOrientation.UIImageOrientationRight
-        else -> UIImageOrientation.UIImageOrientationUp
-    }
+
 
 @OptIn(ExperimentalForeignApi::class)
 private fun AVCaptureConnection.supportsVideoOrientation(): Boolean =
     respondsToSelector(NSSelectorFromString("isVideoOrientationSupported")) ||
             respondsToSelector(NSSelectorFromString("videoOrientation"))
 
-@OptIn(ExperimentalForeignApi::class)
-private fun AVCaptureConnection.safeIsVideoMirrored(): Boolean {
-    return when {
-        respondsToSelector(NSSelectorFromString("isVideoMirrored")) -> isVideoMirrored()
-        respondsToSelector(NSSelectorFromString("videoMirrored")!!) -> videoMirrored
-        else -> false
-    }
-}
+
 
 @OptIn(ExperimentalForeignApi::class)
 private fun AVCaptureConnection.setVideoMirroringIfSupported(shouldMirrorFront: Boolean) {

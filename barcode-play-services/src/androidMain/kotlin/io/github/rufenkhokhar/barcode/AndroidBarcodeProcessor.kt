@@ -1,5 +1,10 @@
+
+
+
 package io.github.rufenkhokhar.barcode
 
+import androidx.annotation.OptIn
+import androidx.camera.core.ExperimentalGetImage
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -20,6 +25,7 @@ internal class AndroidBarcodeProcessor(scannerOptions: BarcodeScannerOptions) : 
     private val barcodeScanner = BarcodeScanning.getClient(scannerOptions)
 
 
+    @ExperimentalGetImage
     override suspend fun processImageFrame(image: PlatformImage): Result<List<ScanResult>> {
         return withContext(Dispatchers.Default) {
             when (image) {
@@ -257,7 +263,7 @@ internal class AndroidBarcodeProcessor(scannerOptions: BarcodeScannerOptions) : 
             rawValue = barcode.rawValue,
             displayValue = barcode.displayValue,
             valueType = resValueType,
-            cornerPoints = barcode.cornerPoints?.map { Point(it.x,it.y) }.orEmpty(),
+            cornerPoints = barcode.cornerPoints?.map { Point(it.x.toFloat(),it.y.toFloat()) }.orEmpty(),
         )
     }
 }
