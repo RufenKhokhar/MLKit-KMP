@@ -12,6 +12,7 @@ import io.github.rufenkhokhar.corevision.PlatformStreamImage
 import io.github.rufenkhokhar.corevision.toBoundingBox
 import io.github.rufenkhokhar.corevision.toMlKitPoints
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -44,7 +45,7 @@ internal class AndroidTextRecognition : TextRecognition {
     }
 
     private suspend fun processImage(inputImage: InputImage): Result<VisionText> {
-        return suspendCoroutine { emitter ->
+        return suspendCancellableCoroutine { emitter ->
             recognizer.process(inputImage)
                 .addOnCompleteListener { result ->
                     if (result.isSuccessful) {

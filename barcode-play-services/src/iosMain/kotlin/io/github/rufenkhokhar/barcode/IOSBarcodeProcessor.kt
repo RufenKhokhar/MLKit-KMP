@@ -116,8 +116,8 @@ internal class IOSBarcodeProcessor(
         val cornerPoints = barcode.cornerPoints?.mapNotNull { value ->
             (value as? NSValue)?.CGPointValue()?.useContents {
                     io.github.rufenkhokhar.corevision.Point(
-                        x = x.toInt(),
-                        y = y.toInt()
+                        x = x.toFloat(),
+                        y = y.toFloat()
                     )
                 }
         }

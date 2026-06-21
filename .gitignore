@@ -1,0 +1,17 @@
+# Credentials - never commit
+publish.sh
+local.properties
+lib_key_store.gpg
+signing.asc
+signing.asc.b64
+
+# Build outputs
+build/
+.gradle/
+.idea/
+.kotlin/
+*.DS_Store
+
+# Pods (iOS dependencies)
+sample/iosApp/Pods/
+sample/iosApp/Podfile.lock

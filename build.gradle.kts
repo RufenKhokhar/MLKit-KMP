@@ -9,5 +9,7 @@ plugins {
 
 allprojects {
     group = "io.github.rufenkhokhar"
-    version = "v0.1.1"
+    version = "v0.2.0"
+    //HVEGKW
+    //m3mkuosHd5NEDSVppgQVoscQLiY7s33Z3
 }
